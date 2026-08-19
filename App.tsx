@@ -3,11 +3,11 @@ import {
   Alert,
   BackHandler,
   Platform,
-  SafeAreaView,
   StatusBar,
   StyleSheet,
   View,
 } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { useGameState } from './src/hooks/useGameState';
 import { HomeScreen } from './src/screens/HomeScreen';
 import { PlayersScreen } from './src/screens/PlayersScreen';
@@ -74,88 +74,90 @@ export default function App() {
   }, [screen, navigate, resetGame, finishGame]);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#0B0716" translucent={false} />
-      <View style={styles.innerContainer}>
-        {screen === 'home' && (
-          <HomeScreen
-            onStartGame={() => navigate('players')}
-            onOpenHowToPlay={() => setIsHowToPlayVisible(true)}
-            onOpenSettings={() => setIsSettingsVisible(true)}
-          />
-        )}
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container}>
+        <StatusBar barStyle="light-content" backgroundColor="#0B0716" translucent={false} />
+        <View style={styles.innerContainer}>
+          {screen === 'home' && (
+            <HomeScreen
+              onStartGame={() => navigate('players')}
+              onOpenHowToPlay={() => setIsHowToPlayVisible(true)}
+              onOpenSettings={() => setIsSettingsVisible(true)}
+            />
+          )}
 
-        {screen === 'players' && (
-          <PlayersScreen
-            players={players}
-            onAddPlayer={addPlayer}
-            onRemovePlayer={removePlayer}
-            onContinue={() => navigate('categories')}
-          />
-        )}
+          {screen === 'players' && (
+            <PlayersScreen
+              players={players}
+              onAddPlayer={addPlayer}
+              onRemovePlayer={removePlayer}
+              onContinue={() => navigate('categories')}
+            />
+          )}
 
-        {screen === 'categories' && (
-          <CategoriesScreen
-            selectedCategories={selectedCategories}
-            onToggleCategory={toggleCategory}
-            onContinue={triggerNextRound}
-          />
-        )}
+          {screen === 'categories' && (
+            <CategoriesScreen
+              selectedCategories={selectedCategories}
+              onToggleCategory={toggleCategory}
+              onContinue={triggerNextRound}
+            />
+          )}
 
-        {screen === 'player_roulette' && currentRound && (
-          <PlayerRouletteScreen
-            round={currentRound}
-            onReady={() => {
-              if (currentRound.isSpecial) {
-                navigate('special_round');
-              } else {
-                navigate('choice');
-              }
-            }}
-          />
-        )}
+          {screen === 'player_roulette' && currentRound && (
+            <PlayerRouletteScreen
+              round={currentRound}
+              onReady={() => {
+                if (currentRound.isSpecial) {
+                  navigate('special_round');
+                } else {
+                  navigate('choice');
+                }
+              }}
+            />
+          )}
 
-        {screen === 'choice' && currentRound && (
-          <TruthOrDareChoiceScreen
-            round={currentRound}
-            onSelectChoice={selectChoice}
-          />
-        )}
+          {screen === 'choice' && currentRound && (
+            <TruthOrDareChoiceScreen
+              round={currentRound}
+              onSelectChoice={selectChoice}
+            />
+          )}
 
-        {screen === 'question' && currentRound && (
-          <QuestionDareScreen
-            round={currentRound}
-            onComplete={(done) => resolveRound(done)}
-            onEndGame={finishGame}
-          />
-        )}
+          {screen === 'question' && currentRound && (
+            <QuestionDareScreen
+              round={currentRound}
+              onComplete={(done) => resolveRound(done)}
+              onEndGame={finishGame}
+            />
+          )}
 
-        {screen === 'special_round' && currentRound && (
-          <SpecialRoundScreen
-            round={currentRound}
-            onAccept={() => resolveRound(true)}
-          />
-        )}
+          {screen === 'special_round' && currentRound && (
+            <SpecialRoundScreen
+              round={currentRound}
+              onAccept={() => resolveRound(true)}
+            />
+          )}
 
-        {screen === 'summary' && (
-          <GameSummaryScreen
-            players={players}
-            roundsHistory={roundsHistory}
-            onPlayAgain={resetGame}
-          />
-        )}
-      </View>
+          {screen === 'summary' && (
+            <GameSummaryScreen
+              players={players}
+              roundsHistory={roundsHistory}
+              onPlayAgain={resetGame}
+            />
+          )}
+        </View>
 
-      {/* Modals */}
-      <HowToPlayModal
-        visible={isHowToPlayVisible}
-        onClose={() => setIsHowToPlayVisible(false)}
-      />
-      <SettingsModal
-        visible={isSettingsVisible}
-        onClose={() => setIsSettingsVisible(false)}
-      />
-    </SafeAreaView>
+        {/* Modals */}
+        <HowToPlayModal
+          visible={isHowToPlayVisible}
+          onClose={() => setIsHowToPlayVisible(false)}
+        />
+        <SettingsModal
+          visible={isSettingsVisible}
+          onClose={() => setIsSettingsVisible(false)}
+        />
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 
