@@ -1,21 +1,27 @@
 {
   "expo": {
-    "name": "truthordare",
+    "name": "Truth or Dare",
     "slug": "truthordare",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./references/icon.png",
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,
+
     "splash": {
       "image": "./references/icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#0B0716"
     },
+
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.extinctsion.truthordare"
     },
+
     "android": {
+      "package": "com.extinctsion.truthordare",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./references/icon.png",
         "backgroundColor": "#0B0716"
@@ -23,6 +29,7 @@
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false
     },
+
     "web": {
       "favicon": "./references/icon.png"
     }
