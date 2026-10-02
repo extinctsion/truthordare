@@ -2,7 +2,7 @@
   "expo": {
     "name": "Truth or Dare",
     "slug": "truthordare",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./references/icon.png",
     "userInterfaceStyle": "dark",
@@ -29,6 +29,14 @@
     "web": {
       "favicon": "./references/icon.png"
     },
+    "plugins": [
+      [
+        "react-native-google-mobile-ads",
+        {
+          "androidAppId": "ca-app-pub-5563332791377215~2881364457"
+        }
+      ]
+    ],
     "extra": {
       "eas": {
         "projectId": "9cc2b9c6-f8ff-437d-8e1f-d54ee3d9a958"
