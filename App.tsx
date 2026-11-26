@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { useGameState } from './src/hooks/useGameState';
+import { initializeAds, showInterstitialAd } from './src/services/adService';
 import { HomeScreen } from './src/screens/HomeScreen';
 import { PlayersScreen } from './src/screens/PlayersScreen';
 import { CategoriesScreen } from './src/screens/CategoriesScreen';
@@ -42,6 +43,18 @@ export default function App() {
     setIsSettingsVisible,
   } = useGameState();
 
+  // Initialize AdMob & UMP Consent on app mount
+  useEffect(() => {
+    initializeAds();
+  }, []);
+
+  // Show Interstitial Ad before navigating to Game Summary
+  const handleFinishGameWithAd = React.useCallback(() => {
+    showInterstitialAd(() => {
+      finishGame();
+    });
+  }, [finishGame]);
+
   // Android Back Button Handler
   useEffect(() => {
     const onBackPress = () => {
@@ -62,7 +75,7 @@ export default function App() {
           'Do you want to quit the current game and view summary?',
           [
             { text: 'Cancel', style: 'cancel' },
-            { text: 'End Game', style: 'destructive', onPress: finishGame },
+            { text: 'End Game', style: 'destructive', onPress: handleFinishGameWithAd },
           ]
         );
         return true;
@@ -71,7 +84,7 @@ export default function App() {
 
     const backHandler = BackHandler.addEventListener('hardwareBackPress', onBackPress);
     return () => backHandler.remove();
-  }, [screen, navigate, resetGame, finishGame]);
+  }, [screen, navigate, resetGame, handleFinishGameWithAd]);
 
   return (
     <SafeAreaProvider>
@@ -127,7 +140,7 @@ export default function App() {
             <QuestionDareScreen
               round={currentRound}
               onComplete={(done) => resolveRound(done)}
-              onEndGame={finishGame}
+              onEndGame={handleFinishGameWithAd}
             />
           )}
 
