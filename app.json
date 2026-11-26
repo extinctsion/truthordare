@@ -2,7 +2,7 @@
   "expo": {
     "name": "Truth or Dare",
     "slug": "truthordare",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./references/icon.png",
     "userInterfaceStyle": "dark",
@@ -18,7 +18,10 @@
     },
     "android": {
       "package": "com.extinctsion.truthordare",
-      "versionCode": 2,
+      "versionCode": 10,
+      "permissions": [
+        "com.google.android.gms.permission.AD_ID"
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./references/icon.png",
         "backgroundColor": "#0B0716"
